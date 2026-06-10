@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Metadata Extractor Pro</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Changa', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #1a1a1a; 
+      color: #e0e0e0; 
+    }
+    .dark-mode .navbar {
+      background-color: #222; 
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode .navbar-brand {
+      color: #e0e0e0 !important; 
+    }
+    .dark-mode .nav-link {
+      color: #e0e0e0 !important; 
+    }
+    .dark-mode .nav-link:hover {
+      color: #ffcc00 !important; 
+    }
+    .dark-mode .container {
+      background-color: #2d2d2d; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode h1 {
+      color: #dc3545; 
+    }
+    .dark-mode .btn-primary {
+      background-color: #dc3545; 
+      color: #fff;
+    }
+    .dark-mode .btn-primary:hover {
+      background-color: #c82333; 
+    }
+    .dark-mode .copy-btn {
+      color: #dc3545; 
+    }
+    .dark-mode .copy-btn:hover {
+      color: #c82333; 
+    }
+    .dark-mode .footer {
+      background-color: #222; 
+      color: #e0e0e0; 
+    }
+    .dark-mode .card {
+      background-color: #2d2d2d; 
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode .card h5 {
+      color: #e0e0e0; 
+    }
+    .dark-mode .card p {
+      color: #b0b0b0; 
+    }
+    .dark-mode .ad-space {
+      background-color: #2d2d2d; 
+      color: #e0e0e0; 
+    }
+    .dark-mode .metadata-item {
+      background-color: #2d2d2d; 
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode .metadata-item h6 {
+      color: #dc3545; 
+    }
+    .dark-mode .metadata-item p {
+      color: #b0b0b0; 
+    }
+    .dark-mode .stats-item {
+      background-color: #2d2d2d; 
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode .stats-item i {
+      color: #dc3545; 
+    }
+    .dark-mode .export-btn {
+      background-color: #dc3545; 
+      color: #fff;
+    }
+    .dark-mode .export-btn:hover {
+      background-color: #c82333; 
+    }
+    .dark-mode .text-muted {
+      color: #d0d0d0 !important; 
+    }
+    .navbar {
+      background-color: #dc3545;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff !important;
+      font-size: 1.5rem;
+    }
+    .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+    }
+    .nav-link:hover {
+      color: #ffcc00 !important;
+    }
+    .container {
+      background-color: #fff;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+    }
+    h1 {
+      color: #dc3545;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+      background-color: #dc3545;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background-color: #c82333;
+    }
+    .copy-btn {
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #dc3545;
+      margin-left: 0.5rem;
+    }
+    .copy-btn:hover {
+      color: #c82333;
+    }
+    .thumbnail {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .footer {
+      margin-top: 20px;
+      background-color: #dc3545;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .card {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      background-color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .card h5 {
+      font-weight: bold;
+      color: #333;
+    }
+    .card p {
+      color: #555;
+    }
+    .ad-space {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .metadata-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .metadata-box img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .metadata-content {
+      flex-grow: 1;
+    }
+    .metadata-content h6 {
+      font-weight: bold;
+      color: #dc3545;
+      margin-bottom: 0.5rem;
+    }
+    .metadata-content p {
+      margin: 0;
+      color: #555;
+    }
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .metadata-item {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .metadata-item h6 {
+      font-weight: bold;
+      color: #dc3545;
+      margin-bottom: 0.5rem;
+    }
+    .metadata-item p {
+      margin: 0;
+      color: #555;
+    }
+    .stats-box {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .stats-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1 1 100%;
+    }
+    .stats-item i {
+      color: #dc3545;
+    }
+    @media (min-width: 768px) {
+      .metadata-box {
+        flex-direction: row;
+      }
+      .metadata-box img {
+        width: 160px;
+        height: 90px;
+      }
+      .stats-item {
+        flex: 1 1 auto;
+      }
+      .metadata-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+    @media (max-width: 767.98px) {
+      .stats-box {
+        flex-direction: row;
+      }
+      .stats-item {
+        flex: 1 1 45%;
+      }
+      .metadata-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .export-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .export-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .export-btn:hover {
+      background-color: #c82333;
+    }
+    .export-btn i {
+      font-size: 1.2rem;
+    }
+    @media (max-width: 767.98px) {
+      .export-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      .export-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="fab fa-youtube"></i> YouTube Metadata Extractor Pro</a>
+      <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">الرئيسية</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-target="#aboutUsModal" data-bs-toggle="modal" href="#">من نحن</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-target="#contactUsModal" data-bs-toggle="modal" href="#">اتصل بنا</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://free0test.blogspot.com/p/privacy-police.html" target="_blank">سياسة الخصوصية</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://free0test.blogspot.com/p/terms-of-use.html" target="_blank">الشروط</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+   
+  <div class="container">
+    <h1 class="text-center"><i class="fab fa-youtube"></i> أداة استخراج بيانات يوتيوب</h1>
+     
+    <div class="ad-space">
+      إعلاناتك هنا
+    </div>
+     
+    <form id="metadataForm">
+      <div class="mb-3">
+        <textarea class="form-control form-control-lg" id="videoUrls" placeholder="أدخل روابط فيديو يوتيوب (واحد لكل سطر)" required rows="3"></textarea>
+      </div>
+      <button class="btn btn-primary w-100" type="submit">استخراج البيانات</button>
+    </form>
+     
+    <div class="loading-spinner" id="loadingSpinner">
+      <div class="spinner-border text-danger" role="status">
+        <span class="visually-hidden">جاري التحميل...</span>
+      </div>
+    </div>
+     
+    <div class="mt-4" id="metadataResult" style="display: none;">
+      <h3 class="mb-3">البيانات:</h3>
+       
+      <div class="card">
+        <div class="metadata-box">
+          <img alt="صورة الفيديو" class="thumbnail" id="videoThumbnail" src="" />
+          <div class="stats-box">
+            <div class="stats-item">
+              <i class="fas fa-eye"></i> &nbsp;
+              <span id="videoViews"></span>
+            </div>
+            <div class="stats-item">
+              <i class="fas fa-thumbs-up"></i> &nbsp;
+              <span id="videoLikes"></span>
+            </div>
+            <div class="stats-item">
+              <i class="fas fa-calendar-alt"></i> &nbsp;
+              <span id="videoUploadDate"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <div class="card">
+        <h5>العنوان: <span id="videoTitle"></span>
+          <button class="copy-btn" onclick="copyToClipboard('videoTitle')"><i class="fas fa-copy"></i></button>
+        </h5>
+      </div>
+       
+      <div class="card">
+        <h6>الوصف:
+          <button class="copy-btn" onclick="copyToClipboard('videoDescription')"><i class="fas fa-copy"></i></button>
+        </h6>
+        <p id="videoDescription" style="white-space: pre-wrap;"></p>
+      </div>
+       
+      <div class="card">
+        <h6>الكلمات المفتاحية:
+          <button class="copy-btn" onclick="copyToClipboard('videoTags')"><i class="fas fa-copy"></i></button>
+        </h6>
+        <p id="videoTags"></p>
+      </div>
+       
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <h6>القناة</h6>
+          <p id="videoChannel"></p>
+        </div>
+        <div class="metadata-item">
+          <h6>المدة</h6>
+          <p id="videoDuration"></p>
+        </div>
+        <div class="metadata-item">
+          <h6>التصنيف</h6>
+          <p id="videoCategory"></p>
+        </div>
+        <div class="metadata-item">
+          <h6>درجة SEO</h6>
+          <p id="seoScore"></p>
+        </div>
+      </div>
+       
+      <div class="export-buttons">
+        <button class="export-btn" onclick="exportMetadata('json')">
+          <i class="fas fa-file-export"></i> تصدير كـ JSON
+        </button>
+        <button class="export-btn" onclick="exportMetadata('csv')">
+          <i class="fas fa-file-csv"></i> تصدير كـ CSV
+        </button>
+        <button class="export-btn" onclick="copyAllMetadata()">
+          <i class="fas fa-copy"></i> نسخ جميع البيانات
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2 class="text-center text-danger"><i class="fas fa-info-circle"></i> عن الأداة</h2>
+    <p class="text-center text-muted">أداة <strong>استخراج بيانات يوتيوب</strong> هي أداة قوية وسهلة الاستخدام لاستخراج البيانات الأساسية من أي فيديو على يوتيوب. سواء كنت صانع محتوى، مسوق، خبير SEO، أو باحث، هذه الأداة تساعدك على استخراج البيانات مثل <strong>العنوان، الوصف، الكلمات المفتاحية، والصورة المصغرة</strong> في بضع ثوانٍ.</p>
+  </div>
+
+  <div class="container mt-5">
+    <h2 class="text-center text-danger"><i class="fas fa-question-circle"></i> لماذا تستخدم هذه الأداة?</h2>
+    <div class="row mt-4">
+      <div class="col-md-6 mb-3">
+        <div class="card p-3 shadow-sm h-100">
+          <h5 class="text-danger"><i class="fas fa-search"></i> SEO &amp; البحث عن الكلمات المفتاحية</h5>
+          <p>من خلال استخراج الكلمات المفتاحية والوصف، يمكنك اكتشاف أفضل الكلمات المفتاحية وتحسين مقاطع الفيديو الخاصة بك لتحقيق ترتيب أعلى على يوتيوب.</p>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="card p-3 shadow-sm h-100">
+          <h5 class="text-danger"><i class="fas fa-chart-line"></i> تحليل المنافسين</h5>
+          <p>تعرف على البيانات التي تستخدمها مقاطع الفيديو الأعلى تصنيفًا وطبق استراتيجيات مماثلة لتحسين ظهور محتواك.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    © 2026 <strong>أداة استخراج بيانات يوتيوب</strong>. جميع الحقوق محفوظة.
+  </footer>
+   
+  <button class="btn btn-dark dark-mode-toggle" onclick="toggleDarkMode()">
+    <i class="fas fa-moon"></i>
+  </button>
+   
+  <div aria-hidden="true" aria-labelledby="aboutUsModalLabel" class="modal fade" id="aboutUsModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aboutUsModalLabel">من نحن</h5>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+        </div>
+        <div class="modal-body">
+          <p>نوفر أداة احترافية لاستخراج بيانات يوتيوب تساعد المستخدمين على استخراج بيانات الفيديو بكفاءة.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div aria-hidden="true" aria-labelledby="contactUsModalLabel" class="modal fade" id="contactUsModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="contactUsModalLabel">اتصل بنا</h5>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+        </div>
+        <div class="modal-body">
+          <p>البريد الإلكتروني: support@example.com</p>
+          <p>الهاتف: +123 456 7890</p>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    // Extract Video ID
+    function extractVideoId(url) {
+      const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : null;
+    }
+
+    // Copy to Clipboard
+    function copyToClipboard(elementId) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text).then(() => alert('تم النسخ إلى الحافظة!'));
+    }
+
+    // Export Metadata
+    function exportMetadata(format) {
+      const metadata = {
+        title: document.getElementById('videoTitle').textContent,
+        description: document.getElementById('videoDescription').textContent,
+        tags: document.getElementById('videoTags').textContent,
+        views: document.getElementById('videoViews').textContent,
+        likes: document.getElementById('videoLikes').textContent,
+        uploadDate: document.getElementById('videoUploadDate').textContent,
+        channel: document.getElementById('videoChannel').textContent,
+        duration: document.getElementById('videoDuration').textContent,
+        category: document.getElementById('videoCategory').textContent,
+        seoScore: document.getElementById('seoScore').textContent,
+      };
+      if (format === 'json') {
+        const blob = new Blob([JSON.stringify(metadata, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'metadata.json';
+        a.click();
+      } else if (format === 'csv') {
+        const csv = Object.keys(metadata).map(key => `"${key}","${metadata[key].replace(/"/g, '""')}"`).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'metadata.csv';
+        a.click();
+      }
+    }
+
+    // Copy All Metadata
+    function copyAllMetadata() {
+      const metadata = {
+        title: document.getElementById('videoTitle').textContent,
+        description: document.getElementById('videoDescription').textContent,
+        tags: document.getElementById('videoTags').textContent,
+        views: document.getElementById('videoViews').textContent,
+        likes: document.getElementById('videoLikes').textContent,
+        uploadDate: document.getElementById('videoUploadDate').textContent,
+        channel: document.getElementById('videoChannel').textContent,
+        duration: document.getElementById('videoDuration').textContent,
+        category: document.getElementById('videoCategory').textContent,
+        seoScore: document.getElementById('seoScore').textContent,
+      };
+      navigator.clipboard.writeText(JSON.stringify(metadata, null, 2)).then(() => alert('تم نسخ جميع البيانات إلى الحافظة!'));
+    }
+
+    // Fetch Metadata
+    document.getElementById('metadataForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const videoUrls = document.getElementById('videoUrls').value.split('\n');
+      const videoIds = videoUrls.map(url => extractVideoId(url.trim())).filter(id => id);
+      if (videoIds.length === 0) {
+        alert('روابط يوتيوب غير صالحة');
+        return;
+      }
+      document.getElementById('loadingSpinner').style.display = 'block';
+      fetchMetadata(videoIds[0]); 
+    });
+
+    function fetchMetadata(videoId) {
+      const apiKey = 'AIzaSyDkWrlszHyv0LwTCiUoa2G3tRJIBxXgkg4';
+      fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=${videoId}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.items && data.items.length > 0) {
+            const video = data.items[0];
+            const snippet = video.snippet;
+            const stats = video.statistics;
+            const details = video.contentDetails;
+
+            // Set metadata fields
+            document.getElementById('videoTitle').textContent = snippet.title;
+            document.getElementById('videoDescription').textContent = snippet.description;
+            document.getElementById('videoTags').textContent = snippet.tags ? snippet.tags.join(', ') : 'لا توجد كلمات مفتاحية';
+
+            // Use the highest quality thumbnail available
+            const thumbnailUrl = snippet.thumbnails.maxres ? snippet.thumbnails.maxres.url :
+                                 snippet.thumbnails.high ? snippet.thumbnails.high.url :
+                                 snippet.thumbnails.standard ? snippet.thumbnails.standard.url :
+                                 snippet.thumbnails.medium ? snippet.thumbnails.medium.url :
+                                 snippet.thumbnails.default.url;
+
+            document.getElementById('videoThumbnail').src = thumbnailUrl;
+
+            document.getElementById('videoViews').textContent = Number(stats.viewCount).toLocaleString('ar-EG');
+            document.getElementById('videoLikes').textContent = stats.likeCount ? Number(stats.likeCount).toLocaleString('ar-EG') : 'غير متاح';
+            document.getElementById('videoUploadDate').textContent = new Date(snippet.publishedAt).toLocaleDateString('ar-EG');
+            document.getElementById('videoChannel').textContent = snippet.channelTitle;
+            document.getElementById('videoDuration').textContent = formatDuration(details.duration);
+            document.getElementById('videoCategory').textContent = getCategoryName(snippet.categoryId);
+            document.getElementById('seoScore').textContent = calculateSeoScore(snippet);
+
+            // Show the metadata result section
+            document.getElementById('metadataResult').style.display = 'block';
+          } else {
+            alert('لم يتم العثور على بيانات لهذا الفيديو أو أن الفيديو خاص/محذوف.');
+          }
+          document.getElementById('loadingSpinner').style.display = 'none';
+        })
+        .catch(error => {
+          alert('حدث خطأ أثناء جلب البيانات: ' + error);
+          document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+
+    // Format Duration (PT16M15S to 16:15)
+    function formatDuration(duration) {
+      const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+      const hours = (match[1] ? match[1].replace('H', '') : '0').padStart(2, '0');
+      const minutes = (match[2] ? match[2].replace('M', '') : '0').padStart(2, '0');
+      const seconds = (match[3] ? match[3].replace('S', '') : '0').padStart(2, '0');
+      return hours !== '00' ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+    }
+
+    // Get Category Name
+    function getCategoryName(categoryId) {
+      const categories = {
+        1: 'أفلام & رسوم متحركة',
+        2: 'سيارات & مركبات',
+        10: 'موسيقى',
+        15: 'حيوانات أليفة & حيوانات',
+        17: 'رياضة',
+        18: 'أفلام قصيرة',
+        19: 'سفر & أحداث',
+        20: 'ألعاب',
+        21: 'فيديو مدونات',
+        22: 'أشخاص & مدونات',
+        23: 'كوميديا',
+        24: 'ترفيه',
+        25: 'أخبار & سياسة',
+        26: 'نصائح & أسلوب',
+        27: 'تعليم',
+        28: 'علوم & تكنولوجيا',
+        29: 'منظمات غير ربحية & نشاط',
+      };
+      return categories[categoryId] || 'غير معروف';
+    }
+
+    // Calculate SEO Score
+    function calculateSeoScore(snippet) {
+      let score = 20; 
+      if (snippet.title && snippet.title.length > 50) score += 25;
+      if (snippet.description && snippet.description.length > 150) score += 25;
+      if (snippet.tags && snippet.tags.length > 5) score += 30;
+      return score + "%";
+    }
+  </script>
+</body>
+</html>
