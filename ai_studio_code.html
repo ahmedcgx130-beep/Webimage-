@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Metadata Extractor Pro</title>
+  <!-- Bootstrap 5 CSS (RTL) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Changa', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+    }
+    .dark-mode .navbar {
+      background-color: #222;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode .navbar-brand {
+      color: #e0e0e0 !important;
+    }
+    .dark-mode .nav-link {
+      color: #e0e0e0 !important;
+    }
+    .dark-mode .nav-link:hover {
+      color: #ffcc00 !important;
+    }
+    .dark-mode .container {
+      background-color: #2d2d2d;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .dark-mode h1, .dark-mode h2, .dark-mode h3 {
+      color: #dc3545;
+    }
+    .dark-mode .btn-primary {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    .dark-mode .btn-primary:hover {
+      background-color: #c82333;
+    }
+    .dark-mode .copy-btn {
+      color: #dc3545;
+    }
+    .dark-mode .copy-btn:hover {
+      color: #c82333;
+    }
+    .dark-mode .footer {
+      background-color: #222;
+      color: #e0e0e0;
+    }
+    .dark-mode .card {
+      background-color: #2d2d2d;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      border: 1px solid #444;
+    }
+    .dark-mode .card h5, .dark-mode .card h6 {
+      color: #e0e0e0;
+    }
+    .dark-mode .card p, .dark-mode .card pre {
+      color: #b0b0b0;
+    }
+    .dark-mode .ad-space {
+      background-color: #2d2d2d;
+      color: #e0e0e0;
+      border: 1px dashed #555;
+    }
+    .dark-mode .metadata-item, .dark-mode .stats-item {
+      background-color: #2d2d2d;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border: 1px solid #444;
+    }
+    .dark-mode .metadata-item h6 {
+      color: #dc3545;
+    }
+    .dark-mode .metadata-item p {
+      color: #b0b0b0;
+    }
+    .dark-mode .stats-item i {
+      color: #dc3545;
+    }
+    .dark-mode .export-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    .dark-mode .export-btn:hover {
+      background-color: #c82333;
+    }
+    .dark-mode .text-muted {
+      color: #d0d0d0 !important;
+    }
+    .navbar {
+      background-color: #dc3545;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff !important;
+      font-size: 1.5rem;
+    }
+    .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+    }
+    .nav-link:hover {
+      color: #ffcc00 !important;
+    }
+    .container {
+      background-color: #fff;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+    }
+    h1 {
+      color: #dc3545;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+      background-color: #dc3545;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background-color: #c82333;
+    }
+    .copy-btn {
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #dc3545;
+      margin-right: 0.5rem;
+    }
+    .copy-btn:hover {
+      color: #c82333;
+    }
+    .thumbnail {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .footer {
+      margin-top: 40px;
+      background-color: #dc3545;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .card {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      background-color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .card h5, .card h6 {
+      font-weight: bold;
+      color: #333;
+    }
+    .card p, .card pre {
+      color: #555;
+      white-space: pre-wrap;
+    }
+    .ad-space {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      margin: 1.5rem 0;
+      border: 1px dashed #ddd;
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .metadata-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .metadata-box img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .metadata-content {
+      flex-grow: 1;
+    }
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .metadata-item {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .metadata-item h6 {
+      font-weight: bold;
+      color: #dc3545;
+      margin-bottom: 0.5rem;
+    }
+    .metadata-item p {
+      margin: 0;
+      color: #555;
+    }
+    .stats-box {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .stats-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1 1 100%;
+    }
+    .stats-item i {
+      color: #dc3545;
+    }
+    @media (min-width: 768px) {
+      .metadata-box {
+        flex-direction: row;
+      }
+      .metadata-box img {
+        width: 160px;
+        height: 90px;
+      }
+      .stats-item {
+        flex: 1 1 auto;
+      }
+      .metadata-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+    @media (max-width: 767.98px) {
+      .stats-box {
+        flex-direction: row;
+      }
+      .stats-item {
+        flex: 1 1 45%;
+      }
+      .metadata-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .export-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .export-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .export-btn:hover {
+      background-color: #c82333;
+    }
+    @media (max-width: 767.98px) {
+      .export-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      .export-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="fab fa-youtube"></i> YouTube Metadata Extractor Pro</a>
+      <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">الرئيسية</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-target="#aboutUsModal" data-bs-toggle="modal" href="#">من نحن</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-target="#contactUsModal" data-bs-toggle="modal" href="#">اتصل بنا</a></li>
+          <li class="nav-item"><a class="nav-link" target="_blank" href="https://free0test.blogspot.com/p/privacy-police.html">سياسة الخصوصية</a></li>
+          <li class="nav-item"><a class="nav-link" target="_blank" href="https://free0test.blogspot.com/p/terms-of-use.html">الشروط</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main Container -->
+  <div class="container">
+    <h1 class="text-center"><i class="fab fa-youtube"></i> أداة استخراج بيانات يوتيوب الذكية</h1>
+    
+    <!-- Ad Space -->
+    <div class="ad-space">
+      مساحة إعلانية
+    </div>
+    
+    <!-- Form -->
+    <form id="metadataForm">
+      <div class="mb-3">
+        <textarea class="form-control form-control-lg" id="videoUrls" placeholder="أدخل روابط فيديو يوتيوب (واحد لكل سطر)" required rows="3"></textarea>
+      </div>
+      <button class="btn btn-primary w-100" type="submit">استخراج البيانات</button>
+    </form>
+    
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+      <div class="spinner-border text-danger" role="status">
+        <span class="visually-hidden">جاري التحميل...</span>
+      </div>
+    </div>
+    
+    <!-- Metadata Result -->
+    <div class="mt-4" id="metadataResult" style="display: none;">
+      <h3 class="mb-3 text-center">البيانات المستخرجة</h3>
+      
+      <!-- Thumbnail and Stats Box -->
+      <div class="card">
+        <div class="metadata-box">
+          <img alt="صورة الفيديو" class="thumbnail" id="videoThumbnail" src="" />
+          <div class="stats-box">
+            <div class="stats-item">
+              <i class="fas fa-eye"></i>
+              <span id="videoViews"></span>
+            </div>
+            <div class="stats-item">
+              <i class="fas fa-thumbs-up"></i>
+              <span id="videoLikes"></span>
+            </div>
+            <div class="stats-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span id="videoUploadDate"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Title Box -->
+      <div class="card">
+        <h5>العنوان الأصلي: 
+          <button class="copy-btn" onclick="copyToClipboard('videoTitle')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <p id="videoTitle"></p>
+      </div>
+
+      <!-- Suggested Titles Box (NEW) -->
+      <div class="card">
+        <h5>عناوين بديلة مقترحة (SEO): 
+          <button class="copy-btn" onclick="copyToClipboard('suggestedTitles')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <ul id="suggestedTitles" class="list-group list-group-flush bg-transparent"></ul>
+      </div>
+      
+      <!-- Description Box -->
+      <div class="card">
+        <h5>الوصف المستخرج:
+          <button class="copy-btn" onclick="copyToClipboard('videoDescription')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <p id="videoDescription"></p>
+      </div>
+      
+      <!-- Tags Box -->
+      <div class="card">
+        <h5>الكلمات المفتاحية:
+          <button class="copy-btn" onclick="copyToClipboard('videoTags')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <p id="videoTags"></p>
+      </div>
+
+      <!-- Generated Hashtags Box (NEW) -->
+      <div class="card">
+        <h5>الهاشتاجات المقترحة (#): 
+          <button class="copy-btn" onclick="copyToClipboard('generatedHashtags')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <p id="generatedHashtags" style="color: #0056b3; font-weight: bold;"></p>
+      </div>
+
+      <!-- Prompt Suggestion Box (NEW) -->
+      <div class="card">
+        <h5>أوامر الذكاء الاصطناعي المقترحة (Prompts): 
+          <button class="copy-btn" onclick="copyToClipboard('aiPrompts')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <pre id="aiPrompts" class="bg-light p-3 rounded" style="font-size: 0.9rem;"></pre>
+      </div>
+
+      <!-- Content Ideas / Similar Content Box (NEW) -->
+      <div class="card">
+        <h5>اقتراحات لمحتوى مشابه وأفكار فيديوهات: 
+          <button class="copy-btn" onclick="copyToClipboard('similarContent')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <ul id="similarContent" class="list-group list-group-flush"></ul>
+      </div>
+
+      <!-- Video Script Outline Box (NEW) -->
+      <div class="card">
+        <h5>مقترح نص الفيديو (Script) والهيكل العام: 
+          <button class="copy-btn" onclick="copyToClipboard('videoScript')"><i class="fas fa-copy"></i></button>
+        </h5>
+        <pre id="videoScript" class="bg-light p-3 rounded" style="font-size: 0.9rem;"></pre>
+      </div>
+      
+      <!-- Additional Metadata Box -->
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <h6>القناة</h6>
+          <p id="videoChannel"></p>
+        </div>
+        <div class="metadata-item">
+          <h6>المدة</h6>
+          <p id="videoDuration"></p>
+        </div>
+        <div class="metadata-item">
+          <h6>التصنيف</h6>
+          <p id="videoCategory"></p>
+        </div>
+        <div class="metadata-item">
+          <h6>درجة SEO متوقعة</h6>
+          <p id="seoScore"></p>
+        </div>
+      </div>
+      
+      <!-- Export Buttons -->
+      <div class="export-buttons">
+        <button class="export-btn" onclick="exportMetadata('json')">
+          <i class="fas fa-file-export"></i>
+          تصدير كـ JSON
+        </button>
+        <button class="export-btn" onclick="exportMetadata('csv')">
+          <i class="fas fa-file-csv"></i>
+          تصدير كـ CSV
+        </button>
+        <button class="export-btn" onclick="copyAllMetadata()">
+          <i class="fas fa-copy"></i>
+          نسخ جميع البيانات
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About This Tool Section -->
+  <div class="container mt-5">
+    <h2 class="text-center text-danger"><i class="fas fa-info-circle"></i> عن الأداة</h2>
+    <p class="text-center text-muted">أداة <strong>استخراج بيانات يوتيوب</strong> هي وسيلة قوية للحصول على التفاصيل الفنية لأي فيديو على المنصة ومساعدتك في توليد أفكار المحتوى وتحسين السيو (SEO) لمدوناتك أو قناتك.</p>
+  </div>
+
+  <!-- Why Use This Tool Section -->
+  <div class="container mt-5">
+    <h2 class="text-center text-danger"><i class="fas fa-question-circle"></i> لماذا تستخدم هذه الأداة؟</h2>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+          <h5 class="text-danger"><i class="fas fa-search"></i> SEO وتوليد الأفكار</h5>
+          <p>استخراج الكلمات والهاشتاجات يساعدك على تحسين مستويات المشاهدة وتفادي أخطاء الأرشفة.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+          <h5 class="text-danger"><i class="fas fa-chart-line"></i> تحليل متكامل</h5>
+          <p>توليد خطط الفيديوهات والسيناريوهات المساعدة اعتماداً على معطيات الفيديو المستهدف.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    © 2025 <strong>أداة استخراج بيانات يوتيوب</strong>. جميع الحقوق محفوظة.
+  </footer>
+  
+  <!-- Dark Mode Toggle -->
+  <button class="btn btn-dark dark-mode-toggle" onclick="toggleDarkMode()">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <!-- About Us Modal -->
+  <div aria-hidden="true" aria-labelledby="aboutUsModalLabel" class="modal fade" id="aboutUsModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aboutUsModalLabel">من نحن</h5>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+        </div>
+        <div class="modal-body">
+          <p>نوفر أداة احترافية تهدف لتبسيط عمليات تحليل وتحسين الفيديوهات وصناعة المحتوى الرقمي عبر تقنيات برمجية مجانية ومفتوحة.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Us Modal -->
+  <div aria-hidden="true" aria-labelledby="contactUsModalLabel" class="modal fade" id="contactUsModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="contactUsModalLabel">اتصل بنا</h5>
+          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+        </div>
+        <div class="modal-body text-start" dir="ltr">
+          <p>Email: support@example.com</p>
+          <p>Phone: +123 456 7890</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      document.querySelector('.navbar').classList.toggle('dark-mode');
+      document.querySelector('.container').classList.toggle('dark-mode');
+      document.querySelector('.footer').classList.toggle('dark-mode');
+      
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => card.classList.toggle('dark-mode'));
+
+      const metadataItems = document.querySelectorAll('.metadata-item');
+      metadataItems.forEach(item => item.classList.toggle('dark-mode'));
+
+      const statsItems = document.querySelectorAll('.stats-item');
+      statsItems.forEach(item => item.classList.toggle('dark-mode'));
+    }
+
+    // Extract Video ID
+    function extractVideoId(url) {
+      const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : null;
+    }
+
+    // Copy to Clipboard
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      let text = "";
+      if (element.tagName === 'UL') {
+        text = Array.from(element.querySelectorAll('li')).map(li => li.innerText).join('\n');
+      } else {
+        text = element.innerText || element.textContent;
+      }
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert('تم النسخ بنجاح!');
+      }).catch(err => {
+        alert('حدث خطأ أثناء النسخ');
+      });
+    }
+
+    // Export Metadata as JSON or CSV
+    function exportMetadata(format) {
+      const metadata = {
+        title: document.getElementById('videoTitle').textContent,
+        description: document.getElementById('videoDescription').textContent,
+        tags: document.getElementById('videoTags').textContent,
+        views: document.getElementById('videoViews').textContent,
+        likes: document.getElementById('videoLikes').textContent,
+        uploadDate: document.getElementById('videoUploadDate').textContent,
+        channel: document.getElementById('videoChannel').textContent,
+        duration: document.getElementById('videoDuration').textContent,
+        category: document.getElementById('videoCategory').textContent,
+        seoScore: document.getElementById('seoScore').textContent,
+      };
+
+      if (format === 'json') {
+        const blob = new Blob([JSON.stringify(metadata, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'youtube-metadata.json';
+        a.click();
+      } else if (format === 'csv') {
+        const csv = Object.keys(metadata).map(key => `"${key}","${metadata[key].replace(/"/g, '""')}"`).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'youtube-metadata.csv';
+        a.click();
+      }
+    }
+
+    // Copy All Metadata
+    function copyAllMetadata() {
+      const metadata = {
+        title: document.getElementById('videoTitle').textContent,
+        description: document.getElementById('videoDescription').textContent,
+        tags: document.getElementById('videoTags').textContent,
+        views: document.getElementById('videoViews').textContent,
+        likes: document.getElementById('videoLikes').textContent,
+        uploadDate: document.getElementById('videoUploadDate').textContent,
+        channel: document.getElementById('videoChannel').textContent,
+        duration: document.getElementById('videoDuration').textContent,
+        category: document.getElementById('videoCategory').textContent,
+        seoScore: document.getElementById('seoScore').textContent,
+      };
+      navigator.clipboard.writeText(JSON.stringify(metadata, null, 2)).then(() => alert('تم نسخ كافة البيانات كصيغة JSON!'));
+    }
+
+    // Fetch Metadata from YouTube API v3
+    document.getElementById('metadataForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const videoUrls = document.getElementById('videoUrls').value.split('\n');
+      const videoIds = videoUrls.map(url => extractVideoId(url.trim())).filter(id => id);
+      
+      if (videoIds.length === 0) {
+        alert('الرجاء التأكد من صحة روابط يوتيوب المدخلة');
+        return;
+      }
+      
+      document.getElementById('loadingSpinner').style.display = 'block';
+      fetchMetadata(videoIds[0]); 
+    });
+
+    function fetchMetadata(videoId) {
+      // إدخال مفتاح API المطلوب مباشرة
+      const apiKey = "AIzaSyDkWrlszHyv0LwTCiUoa2G3tRJIBxXgkg4";
+      
+      fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=${videoId}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.items && data.items.length > 0) {
+            const video = data.items[0];
+            const snippet = video.snippet;
+            const stats = video.statistics;
+            const details = video.contentDetails;
+
+            // البيانات الأساسية
+            document.getElementById('videoTitle').textContent = snippet.title;
+            document.getElementById('videoDescription').textContent = snippet.description || "لا يوجد وصف";
+            
+            const tagsArray = snippet.tags || [];
+            document.getElementById('videoTags').textContent = tagsArray.length > 0 ? tagsArray.join(', ') : 'لا توجد كلمات مفتاحية';
+
+            // تصفية وحساب الهاشتاجات
+            generateHashtags(snippet.title, tagsArray, snippet.description);
+
+            // توليد العناوين البديلة
+            generateSuggestedTitles(snippet.title);
+
+            // اقتراحات المحتوى والبرومبتات والسيناريو
+            generateSmartContentSuite(snippet.title, tagsArray);
+
+            // الصور المصغرة
+            const thumbnailUrl = snippet.thumbnails.maxres ? snippet.thumbnails.maxres.url :
+                                 snippet.thumbnails.high ? snippet.thumbnails.high.url :
+                                 snippet.thumbnails.standard ? snippet.thumbnails.standard.url :
+                                 snippet.thumbnails.medium ? snippet.thumbnails.medium.url :
+                                 snippet.thumbnails.default.url;
+
+            document.getElementById('videoThumbnail').src = thumbnailUrl;
+
+            document.getElementById('videoViews').textContent = parseInt(stats.viewCount || 0).toLocaleString() + " مشاهدة";
+            document.getElementById('videoLikes').textContent = parseInt(stats.likeCount || 0).toLocaleString() + " إعجاب";
+            document.getElementById('videoUploadDate').textContent = new Date(snippet.publishedAt).toLocaleDateString('ar-EG');
+            document.getElementById('videoChannel').textContent = snippet.channelTitle;
+            document.getElementById('videoDuration').textContent = formatDuration(details.duration);
+            document.getElementById('videoCategory').textContent = getCategoryName(snippet.categoryId);
+            document.getElementById('seoScore').textContent = calculateSeoScore(snippet) + " / 100";
+
+            document.getElementById('metadataResult').style.display = 'block';
+          } else {
+            alert('لم يتم العثور على بيانات لهذا الفيديو، يرجى التحقق من صحته أو من إعدادات الـ API');
+          }
+          document.getElementById('loadingSpinner').style.display = 'none';
+        })
+        .catch(error => {
+          alert('حدث خطأ أثناء الاتصال بالخادم: ' + error);
+          document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+
+    // توليد الهاشتاجات الذكية
+    function generateHashtags(title, tags, description) {
+      let hashtags = [];
+      
+      // استخراج الهاشتاجات الموجودة مسبقاً في الوصف إن وجدت
+      const hashRegex = /#\w+/g;
+      const descHashtags = description.match(hashRegex);
+      if (descHashtags) {
+        hashtags = [...descHashtags];
+      }
+
+      // إضافة هاشتاجات مبنية على الكلمات الدلالية
+      if (tags && tags.length > 0) {
+        tags.slice(0, 5).forEach(tag => {
+          const cleanTag = tag.replace(/\s+/g, '_').replace(/[^\w\u0621-\u064A_]/gi, '');
+          if (cleanTag) hashtags.push("#" + cleanTag);
+        });
+      }
+
+      // إضافة هاشتاج عام من العنوان
+      const titleWords = title.split(/\s+/).filter(w => w.length > 3);
+      if (titleWords.length > 0) {
+        hashtags.push("#" + titleWords[0].replace(/[^\w\u0621-\u064A_]/gi, ''));
+      }
+
+      // عرض هاشتاجات فريدة ومحدودة بـ 8 هاشتاجات
+      const uniqueHashtags = [...new Set(hashtags)].slice(0, 8);
+      document.getElementById('generatedHashtags').textContent = uniqueHashtags.join(' ') || "#يوتيوب #صناعة_المحتوى";
+    }
+
+    // توليد عناوين مقترحة (SEO)
+    function generateSuggestedTitles(originalTitle) {
+      const cleanTitle = originalTitle.replace(/[|!-]/g, '').trim();
+      const templates = [
+        `كيف تتقن ${cleanTitle} في خطوات بسيطة`,
+        `أسرار وخبايا عن ${cleanTitle} لا يخبرك بها أحد`,
+        `الدليل العملي لـ ${cleanTitle} للمبتدئين`,
+        `لماذا يجب عليك الاهتمام بـ ${cleanTitle} الآن؟`,
+        `طرق مبتكرة لتحقيق الاستفادة من ${cleanTitle}`
+      ];
+      
+      const listContainer = document.getElementById('suggestedTitles');
+      listContainer.innerHTML = "";
+      templates.forEach(title => {
+        const li = document.createElement('li');
+        li.className = "list-group-item bg-transparent text-secondary border-0 ps-0";
+        li.innerHTML = `<i class="fas fa-magic text-danger me-2"></i> ${title}`;
+        listContainer.appendChild(li);
+      });
+    }
+
+    // توليد أفكار المحتوى، البرومبت، والسيناريو المقترح
+    function generateSmartContentSuite(title, tags) {
+      const cleanTitle = title.replace(/[|!-]/g, '').trim();
+      const primaryKeyword = tags[0] || "هذا المجال";
+
+      // 1. برومبتات جاهزة للذكاء الاصطناعي (Prompts)
+      const prompts = `[برومبت لكتابة السكربت]:\n"اكتب لي سكربت فيديو يوتيوب مدته 7 دقائق مشوق ومبني على عنوان: (${cleanTitle}). الكلمات المفتاحية التي يجب تضمينها هي: ${tags.slice(0,4).join(', ')}. اجعل المقدمة تفاعلية والمحتوى مقسم لنقاط."\n\n[برومبت لتصميم صورة مصغرة]:\n"صورة مصغرة عالية الجودة ليوتيوب تعبر عن (${cleanTitle}). ألوان حيوية متباينة، مع نصوص بارزة وواضحة تلفت الانتباه وتثير الفضول وبدون أخطاء إملائية."`;
+      document.getElementById('aiPrompts').textContent = prompts;
+
+      // 2. اقتراحات محتوى مشابه
+      const similarContentList = [
+        `مراجعة شاملة لأحدث أدوات وتقنيات ${cleanTitle}`,
+        `مقارنة تفصيلية: ${cleanTitle} ضد المنافسين في السوق`,
+        `حل المشكلات الأكثر شيوعاً التي تواجهك في ${primaryKeyword}`,
+        `توقعات ومستقبل ${primaryKeyword} في السنوات القادمة`
+      ];
+
+      const contentContainer = document.getElementById('similarContent');
+      contentContainer.innerHTML = "";
+      similarContentList.forEach(idea => {
+        const li = document.createElement('li');
+        li.className = "list-group-item bg-transparent text-secondary border-0 ps-0";
+        li.innerHTML = `<i class="fas fa-lightbulb text-warning me-2"></i> ${idea}`;
+        contentContainer.appendChild(li);
+      });
+
+      // 3. هيكل السكربت المقترح
+      const script = `**مخطط وسيناريو الفيديو المقترح:**
+
+[0:00 - 0:30] المقدمة والخطاف (Hook):
+ابدأ بطرح سؤال محوري ومثير للاهتمام حول "${cleanTitle}" لجذب الانتباه والاحتفاظ بالمشاهدين.
+
+[0:30 - 3:00] صلب الموضوع - الجزء الأول:
+تطرق إلى أهمية الفكرة الرئيسية، واستخدم بعض الإحصائيات أو البيانات التقنية لتدعيم كلامك.
+
+[3:00 - 6:00] خطوات عملية وتطبيقية:
+اعرض حلولاً للمشاكل التي يبحث عنها المشاهد بخصوص "${primaryKeyword}" على هيئة خطوات مرقمة (1، 2، 3).
+
+[6:00 - 7:00] الخاتمة والدعوة للتفاعل (CTA):
+لخص أهم ما جاء في الفيديو، واطلب من المشاهدين الاشتراك والتعليق بآرائهم لزيادة معدل التفاعل الإيجابي.`;
+      
+      document.getElementById('videoScript').textContent = script;
+    }
+
+    // Format Duration (PT16M15S to 16:15)
+    function formatDuration(duration) {
+      const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+      if (!match) return "غير معروف";
+      const hours = (match[1] ? match[1].replace('H', '') : '0').padStart(2, '0');
+      const minutes = (match[2] ? match[2].replace('M', '') : '0').padStart(2, '0');
+      const seconds = (match[3] ? match[3].replace('S', '') : '0').padStart(2, '0');
+      return hours !== '00' ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+    }
+
+    // Get Category Name
+    function getCategoryName(categoryId) {
+      const categories = {
+        1: 'أفلام & رسوم متحركة',
+        2: 'سيارات & مركبات',
+        10: 'موسيقى',
+        15: 'حيوانات أليفة & حيوانات',
+        17: 'رياضة',
+        18: 'أفلام قصيرة',
+        19: 'سفر & أحداث',
+        20: 'ألعاب',
+        21: 'فيديو مدونات',
+        22: 'أشخاص & مدونات',
+        23: 'كوميديا',
+        24: 'ترفيه',
+        25: 'أخبار & سياسة',
+        26: 'نصائح & أسلوب',
+        27: 'تعليم',
+        28: 'علوم & تكنولوجيا',
+        29: 'منظمات غير ربحية & نشاط',
+      };
+      return categories[categoryId] || 'عام / غير معروف';
+    }
+
+    // Calculate SEO Score
+    function calculateSeoScore(snippet) {
+      let score = 30; // افتراضي أساسي
+      if (snippet.title && snippet.title.length > 40) score += 20;
+      if (snippet.description && snippet.description.length > 150) score += 20;
+      if (snippet.tags && snippet.tags.length > 5) score += 30;
+      return score;
+    }
+  </script>
+</body>
+</html>
